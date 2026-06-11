@@ -1,0 +1,4 @@
+openai>=2.15,<3
+pydantic>=2.10,<3
+stripe>=12,<13
+

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Create original personalized bedtime stories and family adventures.">
+  <title>Story Spark Studio</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="/" aria-label="Story Spark Studio home"><span class="brand-mark">S</span><span><b>Story Spark</b><small>Studio</small></span></a>
+    <nav aria-label="Story tools"><button id="library-button" class="quiet-button" type="button">Library <span id="library-count">0</span></button><span id="credit-badge">Free stories</span><button id="upgrade-button" class="ink-button" type="button">Unlock toolkit</button></nav>
+  </header>
+  <div id="status-banner" class="status-banner" hidden></div>
+
+  <main class="studio-shell">
+    <aside class="workbench" aria-labelledby="workbench-title">
+      <div class="section-heading coral"><span>1</span><h1 id="workbench-title">Build the story</h1></div>
+      <form id="story-form">
+        <fieldset class="mode-picker"><legend>Story mode</legend><label><input type="radio" name="mode" value="bedtime" checked><span>Bedtime</span></label><label><input type="radio" name="mode" value="adventure"><span>Choose a path</span></label><label><input type="radio" name="mode" value="read_aloud"><span>Read aloud</span></label></fieldset>
+        <div class="two-fields"><label>Child's first name<input id="child-name" maxlength="40" placeholder="Maya"></label><label>Age<select id="age-band"><option value="3-5">3–5</option><option value="6-8" selected>6–8</option><option value="9-12">9–12</option></select></label></div>
+        <label>Story world<select id="theme"><option value="moonlit_forest">Moonlit Forest</option><option value="ocean">Teal Sea</option><option value="dinosaurs">Fern Valley Dinosaurs</option><option value="magic_garden">Magic Garden</option><option value="space">Sleepy Starship</option><option value="cozy_town">Buttonberry Town</option></select></label>
+        <label>Characters<input id="characters" maxlength="160" value="a curious child and a friendly firefly"></label>
+        <div class="two-fields"><label>Tone<select id="tone"><option value="gentle">Gentle</option><option value="funny">Funny</option><option value="brave">Brave</option><option value="wonder">Full of wonder</option></select></label><label>Length<select id="length"><option value="short">Short</option><option value="medium">Medium</option><option value="long">Long</option></select></label></div>
+        <label>Optional lesson<input id="lesson" maxlength="120" placeholder="Trying again can help"></label>
+        <label>Leave out<textarea id="exclusions" maxlength="180" rows="2" placeholder="Spiders, storms, anything scary"></textarea></label>
+        <div class="generation-toggle" role="group" aria-label="Generation type"><button id="free-mode" class="selected" type="button">Instant story <small>Free</small></button><button id="premium-mode" type="button">Storybook magic <small>1 credit</small></button></div>
+        <button class="spark-button" type="submit"><span>Create my story</span><b>✦</b></button>
+        <p id="form-error" class="form-error" role="alert"></p>
+      </form>
+    </aside>
+
+    <section class="story-space" aria-labelledby="story-space-title">
+      <header class="section-heading teal"><div><span>2</span><h2 id="story-space-title">Read your story</h2></div><div class="story-actions"><button id="print-button" type="button">Print book</button><button id="script-button" type="button">Narrator view</button><button id="save-button" class="yellow-button" type="button">Save</button></div></header>
+      <div class="story-hero"><img src="/assets/story-spark-cover.webp" alt="An open book releasing colorful original story worlds"><div><p class="eyebrow">Tonight's story</p><h2 id="story-title">The Lantern in the Moonlit Forest</h2><p id="story-subtitle">A gentle bedtime story for ages 6–8</p><div class="story-meta"><span id="reading-time">4 min read</span><span id="generation-label">Instant original</span></div></div></div>
+      <div class="reader-grid">
+        <aside class="page-list"><div class="mini-heading">Story pages</div><ol id="page-list"></ol></aside>
+        <article class="storybook-page">
+          <p class="page-number" id="page-number">Page 1</p><h3 id="page-heading">Once Upon Tonight</h3><p id="page-text"></p><p class="narrator-note" id="narrator-note"></p>
+          <div id="choices" class="choices"></div>
+          <footer><button id="previous-page" type="button" aria-label="Previous page">←</button><span id="page-position">1 / 3</span><button id="next-page" type="button" aria-label="Next page">→</button></footer>
+        </article>
+        <aside class="story-notes"><div class="mini-heading yellow">Storybook notes</div><div id="ending-card"><b>Happy ending</b><p id="ending"></p></div><ul id="safety-notes"></ul></aside>
+      </div>
+      <p class="privacy-note">Names and saved stories stay in this browser. Story text is not retained by Story Spark Studio.</p>
+    </section>
+  </main>
+
+  <div id="print-book" class="print-book" aria-hidden="true"></div>
+
+  <dialog id="purchase-dialog"><button class="dialog-close" data-close="purchase-dialog" aria-label="Close">×</button><p class="eyebrow">Story Spark lifetime toolkit</p><h2>Turn every idea into a keepsake.</h2><div class="price"><strong>$19</strong><span>one time</span></div><ul><li>25 AI-crafted storybooks</li><li>Longer branching adventures</li><li>Complete printable books</li><li>Saved library and narrator scripts</li></ul><button id="buy-button" class="spark-button" type="button"><span>Unlock lifetime toolkit</span><b>→</b></button><p id="billing-note">Secure checkout by Stripe. No subscription.</p><hr><button id="redeem-open" class="text-button" type="button">Bought on Gumroad or Payhip?</button></dialog>
+  <dialog id="redeem-dialog"><button class="dialog-close" data-close="redeem-dialog" aria-label="Close">×</button><p class="eyebrow">Activate a marketplace purchase</p><h2>Bring your toolkit home.</h2><label>Marketplace<select id="redeem-provider"><option value="gumroad">Gumroad</option><option value="payhip">Payhip</option></select></label><label>License key<input id="redeem-key" autocomplete="off"></label><button id="redeem-button" class="spark-button" type="button"><span>Activate toolkit</span><b>→</b></button><p id="redeem-note"></p></dialog>
+  <dialog id="library-dialog"><button class="dialog-close" data-close="library-dialog" aria-label="Close">×</button><p class="eyebrow">Saved in this browser</p><h2>Your story library</h2><p id="library-empty">No saved stories yet.</p><ol id="library-list" class="library-list"></ol></dialog>
+  <dialog id="script-dialog"><button class="dialog-close" data-close="script-dialog" aria-label="Close">×</button><p class="eyebrow">Narrator view</p><h2 id="script-title"></h2><div id="script-text" class="script-text"></div></dialog>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>

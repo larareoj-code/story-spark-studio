@@ -21,4 +21,3 @@ python scripts/serve.py --port 8810
 
 Set the variables shown in `.env.example`. A Redis-compatible Upstash REST database is required for persistent production licenses and atomic credit accounting. Without it, licensing is process-local and suitable only for development.
 
-
