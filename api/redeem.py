@@ -8,12 +8,15 @@ sys.path.insert(0, str(ROOT))
 
 from api.common import JsonHandler  # noqa: E402
 from story_spark.licenses import redeem  # noqa: E402
-from story_spark.store import get_store  # noqa: E402
+from story_spark.store import get_store, persistent_store_configured  # noqa: E402
 
 
 class handler(JsonHandler):
     def do_POST(self) -> None:  # noqa: N802
         try:
+            if not persistent_store_configured():
+                self.respond({"active": False, "error": "Premium activation is being prepared."}, 503)
+                return
             payload = self.read_json(4_000)
             provider = str(payload.get("provider", ""))
             credential = str(payload.get("credential", "")).strip()
@@ -26,4 +29,3 @@ class handler(JsonHandler):
             self.respond({"active": False, "error": str(exc)}, 422)
         except Exception:
             self.respond({"active": False, "error": "Purchase verification is temporarily unavailable."}, 502)
-

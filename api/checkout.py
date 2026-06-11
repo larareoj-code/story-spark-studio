@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from api.common import JsonHandler  # noqa: E402
+from story_spark.store import persistent_store_configured  # noqa: E402
 
 
 def public_origin(request_origin: str) -> str:
@@ -24,6 +25,9 @@ def public_origin(request_origin: str) -> str:
 class handler(JsonHandler):
     def do_POST(self) -> None:  # noqa: N802
         try:
+            if not persistent_store_configured():
+                self.respond({"error": "Premium activation is being prepared. Free stories remain available."}, 503)
+                return
             payload = self.read_json(2_000)
             install_id = str(payload.get("install_id", ""))
             if not install_id.startswith("browser_") or len(install_id) > 96:
@@ -45,4 +49,3 @@ class handler(JsonHandler):
             self.respond({"error": str(exc)}, 422)
         except Exception:
             self.respond({"error": "Checkout could not be started."}, 502)
-

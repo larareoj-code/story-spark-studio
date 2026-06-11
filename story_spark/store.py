@@ -118,8 +118,11 @@ class UpstashLicenseStore:
 _memory_store = MemoryLicenseStore()
 
 
+def persistent_store_configured() -> bool:
+    return bool(os.getenv("UPSTASH_REDIS_REST_URL") and os.getenv("UPSTASH_REDIS_REST_TOKEN"))
+
+
 def get_store() -> LicenseStore:
-    if os.getenv("UPSTASH_REDIS_REST_URL") and os.getenv("UPSTASH_REDIS_REST_TOKEN"):
+    if persistent_store_configured():
         return UpstashLicenseStore()
     return _memory_store
-

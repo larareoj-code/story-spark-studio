@@ -1,6 +1,6 @@
 import pytest
 
-from story_spark.store import MemoryLicenseStore, hash_license
+from story_spark.store import MemoryLicenseStore, hash_license, persistent_store_configured
 
 
 def test_license_hash_is_not_plaintext():
@@ -33,3 +33,12 @@ def test_exhausted_credits_fail():
     with pytest.raises(ValueError):
         store.consume_credit("SSS-license", "browser_0000000000000000")
 
+
+def test_persistent_store_requires_both_credentials(monkeypatch):
+    monkeypatch.delenv("UPSTASH_REDIS_REST_URL", raising=False)
+    monkeypatch.delenv("UPSTASH_REDIS_REST_TOKEN", raising=False)
+    assert persistent_store_configured() is False
+    monkeypatch.setenv("UPSTASH_REDIS_REST_URL", "https://example.invalid")
+    assert persistent_store_configured() is False
+    monkeypatch.setenv("UPSTASH_REDIS_REST_TOKEN", "token")
+    assert persistent_store_configured() is True
